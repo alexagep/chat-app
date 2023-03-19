@@ -1,30 +1,30 @@
-const { Router }  = require('express');
+const { Router } = require("express");
 
 // import generalValidator from '../../common/middlewares/generalValidator'
 // import paginationHandler from '../../common/middlewares/paginationHandler'
-const controller = require('./users.controller');
+const controller = require("./users.controller");
 // import validator from './users.validator'
 // import auth from '../../services/auth'
-const router = Router({ mergeParams: true })
+const router = Router({ mergeParams: true });
 
-// router.get(
-//   '/',
+router.get(
+  '/',
 //   auth.check,
 //   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  ] ),
 //   generalValidator(validator.index),
 //   paginationHandler,
-//   controller.index
-// )
+  controller.index
+)
 
-// router.get(
-//   '/:id',
+router.get(
+  '/:id',
 //   auth.check,
 //   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  , 'user' ] ),
 //   auth.checkIdInParamsWithReqUserId,
 //   auth.checkAdminCanNotGetAdmins,
 //   generalValidator(validator.get),
-//   controller.getUser
-// )
+  controller.getUser
+)
 
 // router.post(
 //   '/login',
@@ -33,39 +33,39 @@ const router = Router({ mergeParams: true })
 // )
 
 router.post(
-  '/',
-//   auth.check,
-//   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  ] ),
-//   auth.checkRequestRole,
-//   generalValidator(validator.create),
+  "/",
+  //   auth.check,
+  //   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  ] ),
+  //   auth.checkRequestRole,
+  //   generalValidator(validator.create),
   controller.create
-)
+);
 
-// router.patch(
-//   '/password/:id',
+router.patch(
+  '/password/:id',
 //   auth.check,
 //   auth.simpleCheckRoles( [ 'superAdmin', 'admin' , 'user' ] ),
 //   auth.checkIdInParamsWithReqUserId,
 //   generalValidator(validator.updatePassword),
-//   controller.updatePassword
-// )
+  controller.updatePassword
+)
 
-// router.patch(
-//   '/info/:id',
+router.patch(
+  '/info/:id',
 //   auth.check,
 //   auth.simpleCheckRoles( [ 'superAdmin', 'admin' , 'user' ] ),
 //   auth.checkIdInParamsWithReqUserId,
 //   auth.checkRoleIsAllowed('role'),
 //   generalValidator(validator.update),
-//   controller.updateUser
-// )
+  controller.updateUser
+)
 
-// router.delete(
-//   '/:id',
-//   auth.check,
-//   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  ] ),
-//   generalValidator(validator.remove),
-//   controller.removeUser
-// )
+router.delete(
+  "/:id",
+  //   auth.check,
+  //   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  ] ),
+  //   generalValidator(validator.remove),
+  controller.removeUser
+);
 
-module.exports = router
+module.exports = router;
