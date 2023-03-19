@@ -8,7 +8,7 @@ This is a simple chat application built with Socket.io and Express. The app allo
 ### Getting Started
 To get started with this app, you'll need to have Node.js and npm installed on your machine. Once you've installed Node.js and npm, follow these steps:
 
-Clone the repository: git clone https://github.com/your-username/chat-app.git
+Clone the repository: git clone https://github.com/alexagep/chat-app.git
 Install the dependencies: npm install
 Start the server: npm start
 After running npm start, you should be able to access the app at http://localhost:3000.
