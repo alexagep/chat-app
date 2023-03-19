@@ -3,7 +3,7 @@
 const { Model }  = require('sequelize');
 const { genSaltSync, hashSync } = require('bcryptjs');
 
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     toJSON() {
       const attributes = this.get()
@@ -37,6 +37,7 @@ export default (sequelize, DataTypes) => {
       role: {
         type: DataTypes.STRING,
         allowNull: false,
+        defaultValue: 'user'
       },
       profile: {
         type: DataTypes.JSONB,

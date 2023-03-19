@@ -1,6 +1,6 @@
 // user messages
 
-const message = {
+const messages = {
     SERVER_ERROR: "خطایی پیش آمده. لطفا دوباره امتحان کنید",
     MINMAXLENGTH: "بایستی بین ۵ تا ۳۶ کاراکتر باشد",
     LOGIN_NEEDED: "ابتدا وارد حساب کاربری شوید",
@@ -317,4 +317,4 @@ const message = {
 //   }
 // }
 
-module.exports = {message, constant}
+module.exports = {messages, constant}
