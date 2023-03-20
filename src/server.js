@@ -3,11 +3,11 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 const http = require('http');
-const routers = require('./src/modules/index.js');
+const routers = require('./modules/index.js');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-const errorHandler = require('./src/common/middlewares/errorHandler');
+const errorHandler = require('./common/middlewares/errorHandler');
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded

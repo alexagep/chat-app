@@ -7,13 +7,7 @@
  * @param {object | string} data - server's processing result
  * @param {string} errStack - err object stack
  */
-module.exports = ({
-  res,
-  statusCode = 200,
-  status = "success",
-  data,
-}) => {
-  console.log(statusCode);
+module.exports = ({ res, statusCode = 200, status = "success", data }) => {
   res.status(statusCode).json({
     data: {
       status,

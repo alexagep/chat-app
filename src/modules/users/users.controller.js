@@ -1,7 +1,8 @@
 const db = require("../../../db/models");
 const { messages } = require("../../common/messages");
 const responseMessage = require("../../common/responseMessage");
-const { hash, compare, genSaltSync } = require("bcryptjs");
+const { Bcrypt } = require("../../common/helper/bcrypt");
+const { Auth } = require("../../services/auth");
 
 create = async (req, res, next) => {
   try {
@@ -14,7 +15,6 @@ create = async (req, res, next) => {
 
     delete user.dataValues.password;
 
-    console.log(user.dataValues);
     responseMessage({
       res,
       statusCode: 201,
@@ -22,7 +22,7 @@ create = async (req, res, next) => {
     });
   } catch (error) {
     // console.error("Error creating user:", error);
-    return next(error);;
+    return next(error);
   }
 };
 
@@ -30,7 +30,6 @@ removeUser = async (req, res, next) => {
   try {
     const user = await db.User.findOne({ ...req.params });
 
-    console.log(user);
     if (
       !user
       //   ||
@@ -53,7 +52,7 @@ removeUser = async (req, res, next) => {
       data: deletedDocument,
     });
   } catch (error) {
-    return next(error);;
+    return next(error);
   }
 };
 
@@ -67,7 +66,7 @@ getUser = async (req, res, next) => {
       data: user,
     });
   } catch (error) {
-    return next(error);;
+    return next(error);
   }
 };
 
@@ -93,7 +92,7 @@ index = async (req, res, next) => {
       data: users,
     });
   } catch (error) {
-    return next(error);;
+    return next(error);
   }
 };
 
@@ -130,7 +129,7 @@ updateUser = async (req, res, next) => {
       data: updatedDocument,
     });
   } catch (error) {
-    return next(error);;
+    return next(error);
   }
 };
 
@@ -148,7 +147,6 @@ updatePassword = async (req, res, next) => {
 
     const user = await db.User.findOne({ where: { ...req.params } });
 
-    console.log(user.dataValues);
     if (
       !user
       //   ||
@@ -165,8 +163,8 @@ updatePassword = async (req, res, next) => {
 
     const { password } = user.dataValues;
 
-    const compared = await compare(currentPassword, password);
-    console.log(compared);
+    const compared = await Bcrypt.compareHashPass(currentPassword, password);
+
     if (!compared) {
       responseMessage({
         res,
@@ -189,7 +187,44 @@ updatePassword = async (req, res, next) => {
       data: updatedDocument,
     });
   } catch (error) {
-    return next(error);;
+    return next(error);
+  }
+};
+
+login = async (req, res, next) => {
+  try {
+    const { password, username } = req.body;
+
+    const user = await db.User.findOne({ where: { username } });
+
+    if (!user) {
+      responseMessage({
+        res,
+        statusCode: 400,
+        data: messages.USER_NOT_FOUND,
+      });
+    }
+
+    const storedPass = user.dataValues.password;
+
+    const compared = await Bcrypt.compareHashPass(password, storedPass);
+
+    if (!compared) {
+      responseMessage({
+        res,
+        statusCode: 400,
+        data: messages.INVALID_LOGIN,
+      });
+    }
+
+    const token = await Auth.generateToken({ ...user.dataValues });
+
+    responseMessage({
+      res,
+      data: { token },
+    });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -200,4 +235,5 @@ module.exports = {
   index,
   updateUser,
   updatePassword,
+  login,
 };

@@ -26,11 +26,11 @@ router.get(
   controller.getUser
 )
 
-// router.post(
-//   '/login',
-//   generalValidator(validator.login),
-//   controller.login
-// )
+router.post(
+  '/login',
+  // generalValidator(validator.login),
+  controller.login
+)
 
 router.post(
   "/",
