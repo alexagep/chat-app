@@ -2,6 +2,7 @@ const { JWT } = require("../common/helper/jwt");
 const redis = require("../config/redis");
 const db = require("../../db/models");
 const { messages } = require("../common/messages");
+const responseMessage = require("../common/responseMessage");
 
 /**
  * representive class of Authentication
@@ -16,7 +17,7 @@ class Auth {
    * @param {object} res - response object
    * @param {function} next - function that send request to the next middleware
    */
-  check = async (req, res, next) => {
+  static check = async (req, res, next) => {
     try {
       let token = req.get("Authorization");
 
@@ -58,6 +59,52 @@ class Auth {
 
       next();
     } catch (error) {
+      return next(error);
+    }
+  };
+
+  static checkOtpToken = async (req, res, next) => {
+    try {
+      let token = req.get("Authorization");
+
+      if (!token) {
+        responseMessage({
+          res,
+          statusCode: 401,
+          data: messages.LOGIN_NEEDED,
+        });
+      }
+
+      token = token.replace("Bearer ", "");
+
+      const payload = await JWT.verifyToken(token);
+
+      if (!payload) {
+        responseMessage({
+          res,
+          statusCode: 403,
+          data: messages.ACCESS_DENIED,
+        });
+      }
+
+      const user = await db.User.findOne({ where: { id: payload.id } });
+
+      if (!user) {
+        responseMessage({
+          res,
+          statusCode: 400,
+          data: messages.USER_NOT_FOUND,
+        });
+      }
+
+      const { id, username, role } = user.dataValues;
+
+      await this.checkOtpSession(id);
+
+      req.user = { id, username, role };
+
+      next();
+    } catch (error) {
       next(error);
     }
   };
@@ -93,13 +140,34 @@ class Auth {
     return token;
   }
 
+  static async generateOtpToken({ id, role}) {
+    const token = JWT.createToken({ id, role }),
+      redisKey = `${id}_otp_token`;
+
+    await redis.setex(redisKey, Number(process.env.SESSION_EXPIRATION), token);
+
+    return token;
+  }
+
   /**
    * @function checkSession
    * @description checks validation period of a token
    * @param {object}
    */
-  async checkSession(id) {
+  static async checkSession(id) {
     const exist = await redis.exists(`${id}_token`);
+
+    if (!exist) {
+      responseMessage({
+        res,
+        statusCode: 401,
+        data: messages.SESSION_OVER,
+      });
+    }
+  }
+
+  static async checkOtpSession(id) {
+    const exist = await redis.exists(`${id}_otp_token`);
 
     if (!exist) {
       responseMessage({
@@ -139,9 +207,10 @@ class Auth {
    * @param {object} res - response object
    * @param {function} next - function that send request to the next middleware
    */
-  simpleCheckRoles = (roles) => {
+  static simpleCheckRoles = (roles) => {
     return (req, res, next) => {
       try {
+        console.log(req.user.role);
         if (!roles.includes(req.user.role)) {
           responseMessage({
             res,

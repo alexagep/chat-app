@@ -14,6 +14,15 @@ export default {
         allowNull: false,
         unique: true,
       },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      otp: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       password: {
         type: Sequelize.TEXT,
         allowNull: false,
@@ -22,7 +31,10 @@ export default {
         type: Sequelize.STRING,
         defaultValue: 'user',
       },
-      profile: Sequelize.JSONB,
+      otpExpireTime: {
+        type: Sequelize.DATE,
+        field: 'otp_expire_time',
+      },
       created_at: {
         type: Sequelize.DATE,
         field: 'created_at',

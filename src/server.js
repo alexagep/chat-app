@@ -18,9 +18,9 @@ app.use(routers)
 
 app.use(errorHandler)
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/chat.html');
-});
+// app.get('/', (req, res) => {
+//   res.sendFile(__dirname + '/chat.html');
+// });
 
 io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {

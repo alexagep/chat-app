@@ -6,22 +6,23 @@ const { Auth } = require("../../services/auth");
 
 create = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
 
     const user = await db.User.create({
       username,
       password,
+      email
     });
 
     delete user.dataValues.password;
-
+    
     responseMessage({
       res,
       statusCode: 201,
       data: user.dataValues,
     });
   } catch (error) {
-    // console.error("Error creating user:", error);
+    console.error("Error creating user:", error);
     return next(error);
   }
 };

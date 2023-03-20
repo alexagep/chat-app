@@ -13,7 +13,7 @@ export default {
             username: 'chatSuperAdmin',
             password: "$2a$12$V0FgHsVMp6RBLTA4NuNm6Oq6YM1jT5DC8xfmpjF8Gtf1C3J6zYSMu",  //aliA123@A
             role: 'superAdmin',
-            profile: '{}',
+            email: 'arrebo@androzito.com',
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           },

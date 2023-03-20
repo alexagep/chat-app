@@ -29,18 +29,6 @@ class JWT {
     }
   }
 
-  // static verifyToken(token) {
-  //   return new Promise((resolve, reject) => {
-  //     verify(token, secretKey, (err, decoded) => {
-  //       if (err) {
-  //         reject(err);
-  //       } else {
-  //         resolve(decoded);
-  //       }
-  //     });
-  //   });
-  // }
-
   /**
    * @function createToken
    * @description creates a token for logged in user

@@ -5,65 +5,66 @@ const { Router } = require("express");
 const controller = require("./users.controller");
 // import validator from './users.validator'
 // import auth from '../../services/auth'
+const { Auth } = require("../../services/auth");
 const router = Router({ mergeParams: true });
 
 router.get(
-  '/',
-//   auth.check,
-//   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  ] ),
-//   generalValidator(validator.index),
-//   paginationHandler,
+  "/",
+  Auth.check,
+  Auth.simpleCheckRoles(["superAdmin"]),
+  //   generalValidator(validator.index),
+  //   paginationHandler,
   controller.index
-)
+);
 
 router.get(
-  '/:id',
-//   auth.check,
-//   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  , 'user' ] ),
-//   auth.checkIdInParamsWithReqUserId,
-//   auth.checkAdminCanNotGetAdmins,
-//   generalValidator(validator.get),
+  "/:id",
+  Auth.check,
+  Auth.simpleCheckRoles(["superAdmin"]),
+  //   Auth.checkIdInParamsWithReqUserId,
+  //   Auth.checkAdminCanNotGetAdmins,
+  //   generalValidator(validator.get),
   controller.getUser
-)
+);
 
 router.post(
-  '/login',
+  "/login",
   // generalValidator(validator.login),
   controller.login
-)
+);
 
 router.post(
   "/",
-  //   auth.check,
-  //   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  ] ),
-  //   auth.checkRequestRole,
+  Auth.check,
+  Auth.simpleCheckRoles(["superAdmin"]),
+  //   Auth.checkRequestRole,
   //   generalValidator(validator.create),
   controller.create
 );
 
 router.patch(
-  '/password/:id',
-//   auth.check,
-//   auth.simpleCheckRoles( [ 'superAdmin', 'admin' , 'user' ] ),
-//   auth.checkIdInParamsWithReqUserId,
-//   generalValidator(validator.updatePassword),
+  "/password/:id",
+  Auth.check,
+  Auth.simpleCheckRoles(["superAdmin", "user"]),
+  //   Auth.checkIdInParamsWithReqUserId,
+  //   generalValidator(validator.updatePassword),
   controller.updatePassword
-)
+);
 
 router.patch(
-  '/info/:id',
-//   auth.check,
-//   auth.simpleCheckRoles( [ 'superAdmin', 'admin' , 'user' ] ),
-//   auth.checkIdInParamsWithReqUserId,
-//   auth.checkRoleIsAllowed('role'),
-//   generalValidator(validator.update),
+  "/info/:id",
+  Auth.check,
+  Auth.simpleCheckRoles(["superAdmin", "user"]),
+  //   Auth.checkIdInParamsWithReqUserId,
+  //   Auth.checkRoleIsAllowed('role'),
+  //   generalValidator(validator.update),
   controller.updateUser
-)
+);
 
 router.delete(
   "/:id",
-  //   auth.check,
-  //   auth.simpleCheckRoles( [ 'superAdmin', 'admin'  ] ),
+  Auth.check,
+  Auth.simpleCheckRoles(["superAdmin"]),
   //   generalValidator(validator.remove),
   controller.removeUser
 );

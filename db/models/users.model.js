@@ -34,15 +34,22 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue('password', hashSync(value, genSaltSync(12)))
         },
       },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
       role: {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: 'user'
       },
-      profile: {
-        type: DataTypes.JSONB,
-        allowNull: false,
-        defaultValue: {},
+      otp: {
+        type: DataTypes.STRING,
+      },
+      otpExpireTime: {
+        type: DataTypes.DATE,
+        field: 'otp_expire_time',
       },
       createdAt: {
         type: DataTypes.DATE,
