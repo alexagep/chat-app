@@ -1,6 +1,6 @@
 {
   "name": "homing",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "simple chat application built with Socket.io and Express",
   "main": "./src/server.js",
   "scripts": {
