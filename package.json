@@ -1,0 +1,59 @@
+{
+  "name": "homing",
+  "version": "0.1.0",
+  "description": "simple chat application built with Socket.io and Express",
+  "main": "./src/server.js",
+  "scripts": {
+    "lint": "eslint",
+    "dev": "nodemon -r esm ./src/server",
+    "db:init": "node -r esm -e 'require(\"./db/init\").initDatabase()'",
+    "db:drop": "node -r esm -e 'require(\"./db/drop\").dropDatabase()'",
+    "db:migrate": "node -r esm ./node_modules/.bin/sequelize-cli db:migrate",
+    "db:migrate:undo": "node -r esm ./node_modules/.bin/sequelize-cli db:migrate:undo",
+    "db:run:seed": "node -r esm ./node_modules/.bin/sequelize-cli db:seed:all",
+    "db:undo:seed": "node -r esm ./node_modules/.bin/sequelize-cli db:seed:undo:all",
+    "prepublishOnly": "npm run lint",
+    "preversion": "npm run lint",
+    "format": "prettier --write \"src/**/*.js\"",
+    "test": "jest ./tests/index.test.js --collectCoverage --forceExit"
+  },
+  "keywords": [],
+  "author": "Ali_Aghapour @alexagep",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexagep/chat-app"
+  },
+  "bugs": {
+    "url": "https://github.com/alexagep/chat-app/issues"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "src/config/database.js",
+      "__tests__/*",
+      "logs"
+    ],
+    "exitcrash": true
+  },
+  "homepage": "https://github.com/alexagep/chat-app#readme",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "ioredis": "^5.3.1",
+    "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.1",
+    "otp-generator": "^4.0.1",
+    "pg": "^8.10.0",
+    "pify": "^6.1.0",
+    "sequelize": "^6.29.3",
+    "sequelize-cli": "^6.6.0",
+    "socket.io": "^4.6.1"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "nodemon": "^2.0.21"
+  }
+}
