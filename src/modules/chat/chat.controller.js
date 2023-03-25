@@ -15,11 +15,12 @@ chatPage = (req, res, next) => {
 
 verifyOtpCode = async (req, res, next) => {
   try {
-    const { otp } = req.body;
+    const { otp } = req.body,
+      userId = req.user.id
 
-    const user = await db.User.findOne({ where: { otp } });
+    const user = await db.User.findOne({ where: { id: userId } });
 
-    if (!user) {
+    if (user.dataValues.otp !== otp) {
       responseMessage({
         res,
         statusCode: 400,
@@ -27,19 +28,15 @@ verifyOtpCode = async (req, res, next) => {
       });
     }
 
-    const storedPass = user.dataValues.password;
-
-    const compared = await Bcrypt.compareHashPass(password, storedPass);
-
-    if (!compared) {
+    if (user.dataValues.otpExpireTime > new Date()) {
       responseMessage({
         res,
         statusCode: 400,
-        data: messages.INVALID_LOGIN,
+        data: messages.OTP_EXPIRED,
       });
     }
 
-    const token = await Auth.generateToken({ ...user.dataValues });
+    const token = await Auth.generateOtpToken({ ...user.dataValues });
 
     responseMessage({
       res,

@@ -5,6 +5,7 @@ const messages = {
     WRONG_OTP: "otp اشتباه است",
     SENDING_OTP_MESSAGE: "We have sent you a one-time password to complete your account setup. Please check your email for a verification code.",
     MINMAXLENGTH: "بایستی بین ۵ تا ۳۶ کاراکتر باشد",
+    OTP_EXPIRED: "otp code منقضی شده است",
     LOGIN_NEEDED: "ابتدا وارد حساب کاربری شوید",
     SUCCESS: "درخواست با موفقیت انجام شد",
     FILE_UPLOAD_ERROR: "هنگام آپلود فایل خطایی رخ داده است",
